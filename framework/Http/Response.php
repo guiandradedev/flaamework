@@ -38,7 +38,7 @@ class Response {
     /**
      * Return HTTP Message.
      *
-     * Esta função retorna auma string parâmetrizada como resposta de uma requisição HTTP,
+     * Esta função retorna uma string parâmetrizada como resposta de uma requisição HTTP,
      *
      * @param string $msg Mensagem a ser renderizada.
      * @param int $status Status HTTP relativo a mensagem a ser enviada.
@@ -50,6 +50,15 @@ class Response {
         return ['msg'=>$msg, 'status'=>$status];
     }
 
+    /**
+     * Return JSON HTTP Message.
+     *
+     * Esta função retorna um JSON como resposta de uma requisição HTTP,
+     *
+     * @param mixed $msg Conteudo a ser renderizado.
+     * @param int $status Status HTTP relativo a mensagem a ser enviada.
+     * @return array ['msg'=>$msg, 'status'=>$status]
+     */
     public function json($msg, int $status=200) {
         http_response_code($status);
         $json = json_encode($msg);
