@@ -14,7 +14,8 @@ class Router
      */
     private static array $routes = []; // Atributo como um vetor de strings
 
-    private static function findRoute(array $paths, string $method) {
+    private static function findRoute(array $paths, string $method)
+    {
         $method = strtoupper($method);
         $find = -1;
         for ($i = 0; $i < count(self::$routes) && $find == -1; $i++) {
@@ -62,6 +63,18 @@ class Router
             }
         }
     }
+
+    /**
+     * Router GET.
+     *
+     * Esta função gera um endpoint do tipo GET,
+     *
+     * @param string $route Endpoint da rota.
+     * @param array ...$callbacks Callback de execução do tipo [Controller::class, 'metodo'].
+     * @return void 
+     * @throws InvalidArgumentException Argumento inválido (rota ou controller)
+     * @throws Error Rota já existe.
+     */
     public static function get(string $route, ...$callbacks)
     {
         // Validate if controller exists
@@ -78,9 +91,9 @@ class Router
         $find = self::findRoute($paths, $method);
 
         if ($find === -1) {
-            throw new Error('Route not found');
+            throw new InvalidArgumentException('Route not found');
         }
-        
+
         $route = self::$routes[$find];
 
         // Instantiate the class and execute the method
