@@ -16,4 +16,4 @@ if(isset($_GET['url'])) {
 
 $a = new Response();
 $nome = 'guilherme';
-$a->send('lorem ipsum dolor', 200);
+$a->json(['lorem ipsum dolor'=>'asds'], 200);

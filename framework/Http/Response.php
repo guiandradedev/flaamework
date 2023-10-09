@@ -50,5 +50,12 @@ class Response {
         return ['msg'=>$msg, 'status'=>$status];
     }
 
+    public function json($msg, int $status=200) {
+        http_response_code($status);
+        $json = json_encode($msg);
+        echo $json;
+        return ['msg'=>$json, 'status'=>$status];
+    }
+
     
 }
