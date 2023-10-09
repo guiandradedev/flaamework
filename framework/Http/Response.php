@@ -35,9 +35,19 @@ class Response {
         
     }
 
+    /**
+     * Return HTTP Message.
+     *
+     * Esta função retorna auma string parâmetrizada como resposta de uma requisição HTTP,
+     *
+     * @param string $msg Mensagem a ser renderizada.
+     * @param int $status Status HTTP relativo a mensagem a ser enviada.
+     * @return array ['msg'=>$msg, 'status'=>$status]
+     */
     public function send(string $msg, int $status=200) {
         http_response_code($status);
         echo $msg;
+        return ['msg'=>$msg, 'status'=>$status];
     }
 
     
