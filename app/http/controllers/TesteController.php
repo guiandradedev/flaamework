@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
-class TesteController {
+use Framework\Http\Controller;
+
+class TesteController extends Controller {
     public function index() {
         
     }

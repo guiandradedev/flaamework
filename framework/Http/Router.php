@@ -71,6 +71,10 @@ class Router
             if (!is_callable($callback)) {
                 throw new InvalidArgumentException('Controller or method not found');
             }
+            if(!is_subclass_of($callback[0], Controller::class)) {
+                $classe = explode('\\', $classe);
+                throw new InvalidArgumentException($classe[count($classe)-1]." não é uma classe filha de Controller");
+            }
         }
     }
 
