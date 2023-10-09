@@ -16,4 +16,4 @@ if(isset($_GET['url'])) {
 
 $a = new Response();
 $nome = 'guilherme';
-$a->render('teste.php', ['nome'=>$nome, 'pao'=>'de batata']);
+$a->send('lorem ipsum dolor', 200);

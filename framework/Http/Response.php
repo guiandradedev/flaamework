@@ -35,5 +35,10 @@ class Response {
         
     }
 
+    public function send(string $msg, int $status=200) {
+        http_response_code($status);
+        echo $msg;
+    }
+
     
 }
