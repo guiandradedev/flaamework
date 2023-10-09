@@ -1,7 +1,12 @@
 <?php
 
+use App\Http\Controllers\TesteController;
 use Framework\Router;
 
-require './config/autoload.php';
+require 'config/autoload.php';
 
-Router::get('a');
+Router::get('route/aa/bb', TesteController::class, 'index');
+
+if(isset($_GET['url'])) {
+    Router::execute($_GET['url']);
+}
