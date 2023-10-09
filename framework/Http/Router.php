@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework;
+namespace Framework\Http;
 
 use Error;
 use Framework\Utils\ArrayUtils;
