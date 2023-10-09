@@ -15,7 +15,17 @@ class Response {
     private function validateFile($file) {
         return file_exists($this->views.$file);
     }
-    public function render(string $file, ...$data) {
+
+    /**
+     * Render Page.
+     *
+     * Esta função renderiza uma página HTML ou PHP que esteja no diretório /resources/views/,
+     *
+     * @param string $file Arquivo (deve-se inserir a extensão do arquivo).
+     * @param array $data Valores em formatao de VETOR que serão acessados na página.
+     * @return void Não retorna nada
+     */
+    public function render(string $file, $data) {
         $file_exists = $this->validateFile($file);
         if(!$file_exists) {
             die('Page não existe');
@@ -24,4 +34,6 @@ class Response {
         require $this->views.$file;
         
     }
+
+    
 }
