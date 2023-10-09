@@ -17,12 +17,25 @@ class Router
     private static function findRoute(array $paths, string $method)
     {
         $method = strtoupper($method);
-        $find = -1;
+
+        static $find = -1; // Declarar a variável $find como estática
+
+        $find = -1; // Reinicializar a variável em cada chamada
+
         for ($i = 0; $i < count(self::$routes) && $find == -1; $i++) {
-            if (self::$routes[$i]['paths'][0] === $paths[0] && self::$routes[$i]['method'] === $method)
+            if (self::$routes[$i]['paths'][0] === $paths[0] && self::$routes[$i]['method'] === $method) {
                 $find = $i;
+            }
         }
-        return $find;
+
+        if ($find !== -1) {
+            $equals = ArrayUtils::array_compare(self::$routes[$find]['paths'], $paths);
+            if ($equals) {
+                return $find;
+            }
+        }
+
+        return -1;
     }
 
     private static function generateRoute(string $path, string $method, ...$callbacks)
@@ -34,10 +47,7 @@ class Router
         $find = self::findRoute($paths, $method);
 
         if ($find !== -1) {
-            $equals = ArrayUtils::array_compare(self::$routes[$find]['paths'], $paths);
-            if ($equals) {
-                throw new Error('Route already exists');
-            }
+            throw new Error('Route already exists');
         }
 
         // Save route
