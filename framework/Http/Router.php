@@ -2,9 +2,11 @@
 
 namespace Framework\Http;
 
+use Config\DependencyInjector;
 use Error;
 use Framework\Utils\ArrayUtils;
 use InvalidArgumentException;
+use ReflectionMethod;
 
 class Router
 {
@@ -67,13 +69,15 @@ class Router
     {
         foreach ($callbacks as $callback) {
             $classe = $callback[0];
+            // $reflexao = new ReflectionClass($classe);
+            // $construtor = $reflexao->getConstructor();
             $callback[0] = new $classe();
             if (!is_callable($callback)) {
                 throw new InvalidArgumentException('Controller or method not found');
             }
-            if(!is_subclass_of($callback[0], Controller::class)) {
+            if (!is_subclass_of($callback[0], Controller::class)) {
                 $classe = explode('\\', $classe);
-                throw new InvalidArgumentException($classe[count($classe)-1]." não é uma classe filha de Controller");
+                throw new InvalidArgumentException($classe[count($classe) - 1] . " não é uma classe filha de Controller");
             }
         }
     }
@@ -113,6 +117,34 @@ class Router
         // Instantiate the class and execute the method
         $instance = new $route['actions'][0]['class']();
         $method = $route['actions'][0]['method'];
-        $instance->$method();
+        $method_reflex = new ReflectionMethod($instance, $method);
+        $paramethers_method = $method_reflex->getParameters();
+        $depedencyInjector = new DependencyInjector();
+        
+        $error = false;
+        $paramethers = [];
+        foreach ($paramethers_method as $paramether) {
+            $tipoParametro = $paramether->getType(); // A partir do PHP 7
+            if ($tipoParametro) {
+                // print_r($tipoParametro->getName());
+                $paramether_function = ArrayUtils::array_search_subvetor($depedencyInjector->dependencies, 'abstract', $tipoParametro->getName());
+                if($paramether_function == -1) {
+                    $error = true;
+                } else {
+                    $paramethers[] = new $depedencyInjector->dependencies[$paramether_function]['final']();
+                }
+            } else {
+                $error = true;
+            }
+        }
+        
+
+        if($error) {
+            throw new Error('An error ocurred while instance a class');
+        }
+
+        // call_user_func_array([$instance, $method], $paramethers);
+
+        $instance->$method(...$paramethers);
     }
 }

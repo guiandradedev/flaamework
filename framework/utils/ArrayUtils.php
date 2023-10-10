@@ -19,4 +19,13 @@ class ArrayUtils {
         // Se todos os elementos forem iguais, os vetores são iguais
         return true;
     }
+
+    public static function array_search_subvetor($vetor, $chave, $valor) {
+        foreach ($vetor as $indice => $subvetor) {
+            if (isset($subvetor[$chave]) && $subvetor[$chave] === $valor) {
+                return $indice; // Retorna o índice do subvetor que corresponde ao valor
+            }
+        }
+        return -1; // Retorna false se não encontrar correspondência
+    }
 }

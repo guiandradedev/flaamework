@@ -1,22 +1,9 @@
 <?php
 
-namespace Framework\Http;
+namespace Framework\Abstract\Http;
 
-use Exception;
-
-class Response {
-    private string $views;
-    public function __construct()
-    {
-        chdir('.');
-        $views = getcwd();
-        $this->views = $views."/resources/views/";
-    }
-    private function validateFile($file) {
-        return file_exists($this->views.$file);
-    }
-
-    /**
+abstract class Response {
+        /**
      * Render Page.
      *
      * Esta função renderiza uma página HTML ou PHP que esteja no diretório /resources/views/,
@@ -25,15 +12,7 @@ class Response {
      * @param array $data Valores em formatao de VETOR que serão acessados na página.
      * @return void Não retorna nada
      */
-    public function render(string $file, $data) {
-        $file_exists = $this->validateFile($file);
-        if(!$file_exists) {
-            die('Page não existe');
-        }
-        extract($data);
-        require $this->views.$file;
-        
-    }
+    public function render(string $file, $data) {}
 
     /**
      * Return HTTP Message.
@@ -44,11 +23,7 @@ class Response {
      * @param int $status Status HTTP relativo a mensagem a ser enviada.
      * @return array ['msg'=>$msg, 'status'=>$status]
      */
-    public function send(string $msg, int $status=200) {
-        http_response_code($status);
-        echo $msg;
-        return ['msg'=>$msg, 'status'=>$status];
-    }
+    public function send(string $msg, int $status=200) {}
 
     /**
      * Return JSON HTTP Message.
@@ -59,12 +34,5 @@ class Response {
      * @param int $status Status HTTP relativo a mensagem a ser enviada.
      * @return array ['msg'=>$msg, 'status'=>$status]
      */
-    public function json($msg, int $status=200) {
-        http_response_code($status);
-        $json = json_encode($msg);
-        echo $json;
-        return ['msg'=>$json, 'status'=>$status];
-    }
-
-    
+    public function json($msg, int $status=200) {}
 }
