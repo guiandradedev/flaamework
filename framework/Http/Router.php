@@ -53,6 +53,8 @@ class Router
     {
         $paths = explode('/', $route);
 
+        if($paths[0] == "") array_splice($paths, 0, 1);
+
         $find = self::findRoute($paths, $method);
 
         if ($find === -1) {
@@ -107,6 +109,8 @@ class Router
     {
         $method = strtoupper($method);
         $paths = explode('/', $path);
+
+        if($paths[0] == "") array_splice($paths, 0, 1);
 
         // Validate if route already exists
         $find = self::findRoute($paths, $method);

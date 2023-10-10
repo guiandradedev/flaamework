@@ -4,6 +4,8 @@ namespace Framework\Utils;
 
 class ArrayUtils {
     public static function array_compare($array1, $array2) {
+        // print_r($array1);
+        // print_r($array2);
         // Primeiro, verifique se os tamanhos dos vetores são iguais
         if (count($array1) !== count($array2)) {
             return false;

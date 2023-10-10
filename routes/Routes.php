@@ -3,7 +3,6 @@
 namespace Routes;
 
 use Framework\Abstract\Http\Routes as HttpRoutes;
-use Framework\Http\Router;
 
 class Routes implements HttpRoutes{
     protected WebRoutes $web;
