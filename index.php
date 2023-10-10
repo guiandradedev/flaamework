@@ -1,9 +1,10 @@
 <?php
 
+use App\Model\User;
 use Framework\Http\Router;
 use Routes\Routes;
 
-require 'config/autoload.php';
+require 'vendor/autoload.php';
 
 $routes = new Routes();
 $routes->execute();

@@ -30,4 +30,13 @@ class ArrayUtils {
         }
         return -1; // Retorna false se não encontrar correspondência
     }
+
+    public static function elements_in_array($vetor, $elements) {
+        $errors = [];
+        foreach ($elements as $element) {
+            $found = array_key_exists($element, $vetor);
+            if(!$found) array_push($errors, $element);
+        }
+        return $errors;
+    }
 }

@@ -1,0 +1,23 @@
+{
+    "name": "flaamer/flaamework",
+    "type": "project",
+    "require": {
+        "vlucas/phpdotenv": "^5.5",
+        "symfony/mailer": "^6.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "framework/",
+            "App\\": "app/",
+            "Resources\\": "resources/",
+            "Routes\\": "routes/",
+            "Config\\": "config/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Guilherme Andrade",
+            "email": "42524262+guiandradedev@users.noreply.github.com"
+        }
+    ]
+}
