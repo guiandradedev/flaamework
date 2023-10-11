@@ -4,12 +4,11 @@ namespace Framework\Http;
 
 use Config\App;
 use Exception;
-use Framework\Abstract\Database\iDBConnection;
 use Framework\Utils\ArrayUtils;
 use InvalidArgumentException;
 use PDO;
 
-abstract class Model implements iDBConnection
+abstract class Model
 {
     protected string $table;
     protected string $model;
@@ -22,8 +21,9 @@ abstract class Model implements iDBConnection
         $this->model = $model;
 
         // connect db
+        $env = App::env();
         try {
-            $this->db = new PDO('mysql:host=' . App::env()['DB_HOST'] . ';dbname=' . App::env()['DB_DATABASE'], App::env()['DB_USERNAME'], App::env()['DB_PASSWORD']);
+            $this->db = new PDO('mysql:host=' . $env['DB_HOST'] . ';dbname=' . $env['DB_DATABASE'], $env['DB_USERNAME'], $env['DB_PASSWORD']);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (Exception $e) {
             print_r($e);
@@ -34,28 +34,21 @@ abstract class Model implements iDBConnection
     }
 
     /**
-     * Validate Table.
+     * Insert Data.
      *
-     * Esta função verifica se a tabela inserida é válida no banco de dados,
+     * Esta função insere dados na tabela do banco de dados,
      *
+     * @param array $data Dados que serão inseridos. Deve ser um vetor no formato ['campo'=>'valor']!
+     * @param array $mandatory_data Dados .
      * @param string $table Tabela a ser manipulada.
-     * @return Boolean Retorna uma instância do Model manipulado
-     * @throws InvalidArgumentException Tabela inválidos.
+     * @param string $model Nome da classe a ser instanciada.
+     * @return Model Retorna uma instância do Model manipulado
+     * @throws InvalidArgumentException Tabela ou valores inválidos.
      */
-    private function verifyTable($table)
+    protected function insert(array $data, array $mandatory_data, string $table = null, string $model = null): Model
     {
-        $query = "SHOW TABLES LIKE '$table'";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
-        if($stmt->rowCount() === 0) {
-            throw new InvalidArgumentException('Table not found');
-        }
-    }
-
-    public function insert(array $data, array $mandatory_data, string $table=null, string $model=null): Model
-    {
-        if($table === null) $table = $this->table;
-        if($model === null) $model = $this->model;
+        if ($table === null) $table = $this->table;
+        if ($model === null) $model = $this->model;
         // falta validar se os valores são válidos
         if (!is_subclass_of($model, Model::class)) {
             throw new InvalidArgumentException("This class is not a model.");
@@ -85,13 +78,53 @@ abstract class Model implements iDBConnection
         return $instance;
     }
 
+    // /**
+    //  * Get Data.
+    //  *
+    //  * Esta função lista os dados da tabela do banco de dados,
+    //  *
+    //  * @param mixed $filter Filtragem dos dados a serem listados.
+    //  * @param string $table Tabela a ser manipulada.
+    //  * @param string $model Nome da classe a ser instanciada.
+    //  * @return Model Retorna uma instância do Model manipulado
+    //  * @throws InvalidArgumentException Tabela ou valores inválidos.
+    //  */
+    // protected function get(mixed $filter, string $table, string $model): Model;
+    // /**
+    //  * Find By Id.
+    //  *
+    //  * Esta função busca por um dado com id especifico na tabela do banco de dados,
+    //  *
+    //  * @param string $id Identificador Único da tabela para ser buscado.
+    //  * @param string $table Tabela a ser manipulada.
+    //  * @param string $model Nome da classe a ser instanciada.
+    //  * @return Model[] Retorna uma instância do Model manipulado
+    //  * @throws InvalidArgumentException Tabela ou valores inválidos.
+    //  */
+    // protected function findById(string|int $id, string $table, string $model): Model;
+    // protected function find(string $table, string $model, ...$filter): Model;
+    // protected function patch($data, string $table, string $model): Model;
+    // protected function put($data, string $table, string $model): Model;
+    // protected function delete($id, string $table, string $model): void;
 
-    // public function get(mixed $filter, string $table, string $model): Model;
-    // public function findById(string|int $id, string $table, string $model): Model;
-    // public function find(string $table, string $model, ...$filter): Model;
-    // public function patch($data, string $table, string $model): Model;
-    // public function put($data, string $table, string $model): Model;
-    // public function delete($id, string $table, string $model): void;
+    // // protected function query($q): mixed;
 
-    // public function query($q): mixed;
+    /**
+     * Validate Table.
+     *
+     * Esta função verifica se a tabela inserida é válida no banco de dados,
+     *
+     * @param string $table Tabela a ser manipulada.
+     * @return Boolean Retorna uma instância do Model manipulado
+     * @throws InvalidArgumentException Tabela inválidos.
+     */
+    private function verifyTable($table)
+    {
+        $query = "SHOW TABLES LIKE '$table'";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        if ($stmt->rowCount() === 0) {
+            throw new InvalidArgumentException('Table not found');
+        }
+    }
 }

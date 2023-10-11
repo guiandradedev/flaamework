@@ -3,7 +3,7 @@
 namespace Framework\Abstract\Http;
 
 abstract class Response {
-        /**
+    /**
      * Render Page.
      *
      * Esta função renderiza uma página HTML ou PHP que esteja no diretório /resources/views/,
@@ -13,6 +13,17 @@ abstract class Response {
      * @return void Não retorna nada
      */
     public function render(string $file, $data) {}
+
+    /**
+     * Include HTML Component.
+     *
+     * Esta função renderiza um componente PHP que esteja no diretório /resources/views/components,
+     *
+     * @param string $file Arquivo (deve-se inserir a extensão do arquivo).
+     * @param array $data Valores em formatao de VETOR que serão acessados na página.
+     * @return void Não retorna nada
+     */
+    public function include(string $file, $data) {}
 
     /**
      * Return HTTP Message.

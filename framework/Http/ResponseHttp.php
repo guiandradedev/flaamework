@@ -36,6 +36,25 @@ class ResponseHttp extends Response{
     }
 
     /**
+     * Include HTML Component.
+     *
+     * Esta função renderiza um componente PHP que esteja no diretório /resources/views/components,
+     *
+     * @param string $file Arquivo (deve-se inserir a extensão do arquivo).
+     * @param array $data Valores em formatao de VETOR que serão acessados na página.
+     * @return void Não retorna nada
+     */
+    public function include(string $file, $data) {
+        $file_exists = $this->validateFile($file);
+        if(!$file_exists) {
+            die('Page não existe');
+        }
+        extract($data);
+        require $this->views.$file;
+        
+    }
+
+    /**
      * Return HTTP Message.
      *
      * Esta função retorna uma string parâmetrizada como resposta de uma requisição HTTP,

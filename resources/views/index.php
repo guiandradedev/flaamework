@@ -8,6 +8,6 @@
 <body>
     <h1>Página Home</h1>
     <a href="<?php echo $url; ?>/signup">Cadastrar</a>
-    <a href="/signin">Logar</a>
+    <a href="<?php echo $url; ?>/signin">Logar</a>
 </body>
 </html>
